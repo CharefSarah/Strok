@@ -3114,5 +3114,374 @@ load().then(()=>{showTab('today');syncDock();buildColorPanel();checkDraft();});
 
 
 </script>
+    <!-- ════════════════════════════════════════════════════════════════
+     STROK — EXTENSION
+     À coller tel quel juste avant la balise de fermeture du body,
+     donc après le bloc de code existant.
+     Ne modifie rien : complète et remplace quelques fonctions.
+     ════════════════════════════════════════════════════════════════ -->
+    <style>
+.galgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.galcell{aspect-ratio:1;border:0;padding:0;overflow:hidden;cursor:pointer;background:var(--sunk);
+  border-radius:var(--r-md);position:relative;box-shadow:var(--shadow)}
+.galcell img{width:100%;height:100%;object-fit:cover;display:block}
+.galcell .del{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;
+  background:rgba(2,6,24,.7);color:#fff;border:0;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;padding:0}
+.galcell .del svg{width:13px;height:13px}
+.galpick{position:fixed;inset:0;background:var(--bg);z-index:68;display:none;flex-direction:column;
+  padding-top:env(safe-area-inset-top)}
+.galpick.on{display:flex}
+.hexrow{display:flex;align-items:center;gap:10px;margin-top:14px}
+.hexrow input[type=text]{flex:1;background:var(--sunk);border:0;border-radius:var(--r-md);
+  color:var(--ink);padding:12px 14px;font-family:'Space Mono',monospace;font-size:14px;
+  text-transform:uppercase}
+.hexrow input[type=text]:focus{outline:2px solid var(--ring);outline-offset:-2px}
+</style>
+
+    <script>
+/* ═══════════ 1. PINCEAUX SUPPLÉMENTAIRES ═══════════
+   Chaque médium a sa logique propre : les médiums opaques (feutre, gouache)
+   se dessinent à alpha 1 pour ne pas se surcharger là où le geste ralentit ;
+   les médiums secs (crayons) montent au contraire par couches transparentes. */
+Object.assign(BRUSHES,{
+  peinture  :{label:'Peinture',       kind:'paint'},
+  gouache   :{label:'Gouache',        kind:'gouache'},
+  feutre    :{label:'Feutre',         kind:'marker'},
+  crayoncoul:{label:'Crayon couleur', kind:'colorpencil'},
+  crayon    :{label:'Crayon',         kind:'pencil'}
+});
+
+const _segBase = strokeSeg;
+strokeSeg = function(g,B,col,sz,a,p,st){
+  const dx=p.x-a.x, dy=p.y-a.y, len=Math.hypot(dx,dy)||.001;
+  const rad=(brushAngle||0)*Math.PI/180;
+  const nx0=-dy/len, ny0=dx/len;
+  const nx=nx0*Math.cos(rad)-ny0*Math.sin(rad), ny=nx0*Math.sin(rad)+ny0*Math.cos(rad);
+
+  if(B.kind==='paint'){
+    /* huile épaisse : quelques larges poils chargés, chacun sa nuance */
+    st.travelled+=len;
+    if(!st.paint){
+      const n=Math.max(3,Math.min(9,Math.round(sz/7)));
+      st.paint=[];
+      for(let i=0;i<n;i++){
+        const t=n===1?0:(i/(n-1))*2-1;
+        st.paint.push({off:t*.82,
+          w:(sz/n)*1.75,
+          col:jitter(col,(Math.random()-.5)*.20,(Math.random()-.5)*12),
+          a:.62+Math.random()*.38});
+      }
+    }
+    const load=Math.max(.45,1-st.travelled/(sz*70));
+    const half=sz/2;
+    for(const b of st.paint){
+      g.globalAlpha=b.a*load;
+      g.strokeStyle=b.col;g.lineWidth=b.w;g.lineCap='round';
+      g.beginPath();
+      g.moveTo(a.x+nx*b.off*half, a.y+ny*b.off*half);
+      g.lineTo(p.x+nx*b.off*half, p.y+ny*b.off*half);
+      g.stroke();
+    }
+    g.globalAlpha=1;return;
+  }
+
+  if(B.kind==='gouache'){
+    /* opaque et mat, avec un bord qui respire légèrement */
+    g.globalAlpha=1;g.strokeStyle=col;g.lineCap='round';g.lineJoin='round';
+    g.lineWidth=sz*(.94+.12*tooth(p.x,p.y));
+    g.beginPath();g.moveTo(a.x,a.y);g.lineTo(p.x,p.y);g.stroke();
+    return;
+  }
+
+  if(B.kind==='marker'){
+    /* feutre : largeur constante, bouts francs, aucune accumulation */
+    g.globalAlpha=1;g.strokeStyle=col;g.lineWidth=sz;
+    g.lineCap='butt';g.lineJoin='round';
+    g.beginPath();g.moveTo(a.x,a.y);g.lineTo(p.x,p.y);g.stroke();
+    g.lineCap='round';
+    return;
+  }
+
+  if(B.kind==='colorpencil'||B.kind==='pencil'){
+    /* médiums secs : le grain du papier décide où la mine accroche */
+    const graphite = B.kind==='pencil';
+    const step=Math.max(.8, sz*(graphite?.16:.13));
+    const half=sz/2;
+    const strands=graphite?4:6;
+    const speedFade=Math.max(.35,1-Math.min(len,30)/46);
+    for(let d=0;d<len;d+=step){
+      const t=d/len, x=a.x+dx*t, y=a.y+dy*t;
+      for(let i=0;i<strands;i++){
+        const off=(Math.random()*2-1)*half;
+        const px=x+nx*off+(Math.random()-.5)*1.2;
+        const py=y+ny*off+(Math.random()-.5)*1.2;
+        const grain=tooth(px,py);
+        if(grain< (graphite?.68:.58)) continue;      // la mine saute les creux du papier
+        const al=(graphite?.16:.20)*grain*speedFade*(.55+Math.random()*.65);
+        if(al<.012) continue;
+        g.globalAlpha=al;
+        g.strokeStyle=graphite?col:jitter(col,(Math.random()-.5)*.10,(Math.random()-.5)*6);
+        g.lineWidth=graphite?Math.max(.5,sz*.055):Math.max(.6,sz*.075);
+        g.lineCap='round';
+        g.beginPath();g.moveTo(px,py);g.lineTo(px+dx/len*step*1.4, py+dy/len*step*1.4);g.stroke();
+      }
+    }
+    g.globalAlpha=1;return;
+  }
+
+  return _segBase(g,B,col,sz,a,p,st);
+};
+
+/* la liste du panneau Pinceau, réordonnée par famille */
+const BRUSH_ORDER=['rond','carre','plume','soies','peinture','gouache','feutre','craie','crayoncoul','crayon'];
+buildBrushList = function(){
+  const box=document.getElementById('brushList');box.innerHTML='';
+  BRUSH_ORDER.forEach(k=>{
+    if(!BRUSHES[k])return;
+    const b=document.createElement('button');
+    b.className='brushrow';b.setAttribute('aria-pressed',String(k===brush));
+    const nm=document.createElement('span');nm.className='nm';nm.textContent=BRUSHES[k].label;
+    const cv=document.createElement('canvas');
+    b.append(nm,cv);
+    b.onclick=()=>{brush=k;lastBrush=k;buildBrushList();syncDock();};
+    box.appendChild(b);
+    requestAnimationFrame(()=>previewStroke(cv,k));
+  });
+};
+
+/* ═══════════ 2. GALERIE D'IMAGES ═══════════
+   Toute image chargée comme modèle est gardée : on la retrouve pour une autre séance. */
+async function libAdd(dataURL){
+  S.library=S.library||[];
+  const im=await loadImg(dataURL);
+  const th=squareThumb(im,300).toDataURL('image/jpeg',.7);
+  const id=uid();
+  await putImg('lib:'+id,dataURL);
+  S.library.unshift({id,thumb:th,date:new Date().toISOString().slice(0,10)});
+  if(S.library.length>120){                       // garde-fou : on ne remplit pas le téléphone
+    const old=S.library.pop();
+    delImg('lib:'+old.id);
+  }
+  await save();
+}
+async function libDelete(id){
+  S.library=(S.library||[]).filter(x=>x.id!==id);
+  await delImg('lib:'+id);await save();
+  paintLibrary();
+}
+/* on greffe l'enregistrement sur useRef sans le réécrire */
+const _useRefBase=useRef;
+useRef = function(dataURL){
+  _useRefBase(dataURL);
+  if(!libSuppressNext) libAdd(dataURL).catch(()=>{});
+  libSuppressNext=false;
+};
+let libSuppressNext=false;
+
+/* --- la grille, injectée dans l'onglet Carnet --- */
+(function injectLibraryPane(){
+  const seg=document.querySelector('#tab-carnet .seg');
+  if(!seg)return;
+  const b=document.createElement('button');
+  b.dataset.p='images';b.setAttribute('aria-pressed','false');
+  b.innerHTML=svg('image')+'Images';
+  b.onclick=()=>showPane('images');
+  seg.appendChild(b);
+
+  const pane=document.createElement('div');
+  pane.className='pane';pane.id='pane-images';
+  pane.innerHTML='<p class="subtle" style="margin:0 0 4px">Les modèles que tu as photographiés ou importés. '+
+    'Touche une image pour la réutiliser dans une nouvelle séance.</p>'+
+    '<div class="galgrid" id="libGrid"></div>'+
+    '<div class="empty" id="libEmpty" style="display:none"><p>Aucune image pour l\u2019instant. '+
+    'Elles s\u2019ajoutent toutes seules quand tu charges un modèle.</p></div>';
+  document.querySelector('#tab-carnet .wrap').appendChild(pane);
+})();
+
+function paintLibrary(){
+  const grid=document.getElementById('libGrid');if(!grid)return;
+  const list=S.library||[];
+  grid.innerHTML='';
+  list.forEach(it=>{
+    const c=document.createElement('button');c.className='galcell press';
+    const im=document.createElement('img');im.src=it.thumb;im.alt='';
+    const del=document.createElement('button');del.className='del';del.innerHTML=svg('trash');
+    del.onclick=e=>{e.stopPropagation();if(confirm('Retirer cette image de la galerie ?'))libDelete(it.id);};
+    c.append(im,del);
+    c.onclick=()=>useFromLibrary(it.id);
+    grid.appendChild(c);
+  });
+  document.getElementById('libEmpty').style.display=list.length?'none':'block';
+}
+async function useFromLibrary(id){
+  const full=await getImg('lib:'+id);
+  if(!full){toast('Image introuvable');return;}
+  libSuppressNext=true;                         // évite de la ré-enregistrer en double
+  closeGalPick();
+  if(document.getElementById('draw').classList.contains('on')){
+    useRef(full);
+  }else{
+    newSession(null);
+    setTimeout(()=>useRef(full),260);
+  }
+}
+const _showPaneBase=showPane;
+showPane = function(p){
+  _showPaneBase(p);
+  const im=document.getElementById('pane-images');
+  if(im){
+    im.classList.toggle('on', p==='images');
+    document.querySelectorAll('#tab-carnet .seg button').forEach(b=>
+      b.setAttribute('aria-pressed',String(b.dataset.p===p)));
+    if(p==='images')paintLibrary();
+  }
+};
+const _paintCarnetBase=paintCarnet;
+paintCarnet = function(){ _paintCarnetBase(); paintLibrary(); };
+
+/* --- sélecteur plein écran, depuis le panneau Modèle --- */
+(function injectGalPick(){
+  const d=document.createElement('div');
+  d.className='galpick';d.id='galPick';
+  d.innerHTML='<div class="bigctl"><button class="iconbtn" id="galPickX"></button>'+
+    '<span class="lbl">Ma galerie</span><span style="width:44px"></span></div>'+
+    '<div class="scroll"><div class="wrap"><div class="galgrid" id="galPickGrid"></div>'+
+    '<div class="empty" id="galPickEmpty" style="display:none"><p>Aucune image enregistrée.</p></div>'+
+    '</div></div>';
+  document.querySelector('.phone').appendChild(d);
+  document.getElementById('galPickX').innerHTML=svg('x');
+  document.getElementById('galPickX').onclick=closeGalPick;
+
+  const box=document.querySelector('#sheetRef .bigchoice');
+  if(box){
+    const b=document.createElement('button');
+    b.className='press';b.innerHTML=svg('images')+'Ma galerie';
+    b.onclick=openGalPick;box.appendChild(b);
+  }
+})();
+function openGalPick(){
+  const grid=document.getElementById('galPickGrid');grid.innerHTML='';
+  const list=S.library||[];
+  list.forEach(it=>{
+    const c=document.createElement('button');c.className='galcell press';
+    const im=document.createElement('img');im.src=it.thumb;im.alt='';
+    c.appendChild(im);c.onclick=()=>useFromLibrary(it.id);
+    grid.appendChild(c);
+  });
+  document.getElementById('galPickEmpty').style.display=list.length?'none':'block';
+  closeSheet();
+  document.getElementById('galPick').classList.add('on');
+}
+function closeGalPick(){document.getElementById('galPick').classList.remove('on');}
+
+/* ═══════════ 3. ROUE : SAISIR UNE COULEUR À LA MAIN ═══════════ */
+(function injectWheelHex(){
+  const fader=document.getElementById('wheelVFader');
+  if(!fader)return;
+  const row=document.createElement('div');
+  row.className='hexrow';
+  row.innerHTML='<input type="color" class="nativepick press" id="wheelNative" value="#3B82F6" '+
+    'aria-label="Choisir une couleur de base">'+
+    '<input type="text" id="wheelHex" placeholder="#3B82F6" maxlength="7" '+
+    'inputmode="text" autocapitalize="characters" spellcheck="false">'+
+    '<button class="pill press" id="wheelFromCur">Couleur active</button>';
+  fader.parentElement.after(row);
+
+  document.getElementById('wheelNative').oninput=e=>wheelSetBase(e.target.value);
+  const hexIn=document.getElementById('wheelHex');
+  hexIn.oninput=e=>{
+    let v=e.target.value.trim();
+    if(v[0]!=='#')v='#'+v;
+    if(/^#[0-9a-fA-F]{6}$/.test(v))wheelSetBase(v,true);
+  };
+  document.getElementById('wheelFromCur').onclick=()=>wheelSetBase(color);
+})();
+/* place une couleur donnée sur la roue et recalcule l'harmonie autour d'elle */
+function wheelSetBase(hexc,fromText){
+  if(!/^#[0-9a-fA-F]{6}$/.test(hexc))return;
+  const [h,s,v]=rgb2hsv(...hex2rgb(hexc));
+  wheelH=h; wheelS=Math.max(.03,s); wheelV=Math.max(.05,v);
+  delete lockedColors[0];                    // la base ne peut pas être à la fois saisie et verrouillée
+  document.getElementById('wheelVv').textContent=Math.round(wheelV*100);
+  if(fWheelV)fWheelV.render();
+  paintWheel();
+  syncWheelInputs(fromText);
+}
+function syncWheelInputs(skipText){
+  const base=hx(...hsv2rgb(wheelH,wheelS,wheelV));
+  const n=document.getElementById('wheelNative');if(n)n.value=base;
+  const t=document.getElementById('wheelHex');
+  if(t&&!skipText)t.value=base.toUpperCase();
+}
+const _redrawMarkersBase=redrawWheelMarkers;
+redrawWheelMarkers = function(){ _redrawMarkersBase(); syncWheelInputs(); };
+/* toucher une pastille la promeut comme nouvelle base : on voit où elle tombe dans l'harmonie */
+const _renderWheelSwatchesBase=renderWheelSwatches;
+renderWheelSwatches = function(cols){
+  _renderWheelSwatchesBase(cols);
+  const w=document.getElementById('wheelSwatches');if(!w)return;
+  [...w.children].forEach((wrap,i)=>{
+    const b=wrap.querySelector('.sw');if(!b)return;
+    b.title=(cols[i]||'')+' — appui long : en faire la couleur de base';
+    let t=null;
+    b.addEventListener('pointerdown',()=>{t=setTimeout(()=>{
+      wheelSetBase(cols[i]);toast('Base : '+cols[i].toUpperCase());t=null;},450);});
+    ['pointerup','pointercancel','pointerleave'].forEach(ev=>
+      b.addEventListener(ev,()=>{if(t){clearTimeout(t);t=null;}}));
+  });
+};
+
+/* ═══════════ 4. ÉTUDE : VALEURS EN COULEUR ═══════════
+   Même postérisation, mais on garde la teinte : on voit les aplats de couleur
+   au lieu des seuls gris. Utile pour repérer les grandes masses colorées. */
+let studyKeepColor=false;
+buildValueFilter = function(n){
+  const vals=[];for(let i=0;i<n;i++)vals.push(n>1?(i/(n-1)).toFixed(3):'0.5');
+  const tv=vals.join(' ');
+  ['vf-r','vf-g','vf-b'].forEach(id=>document.getElementById(id).setAttribute('tableValues',tv));
+  const cm=document.querySelector('#valueFilter feColorMatrix');
+  if(cm)cm.setAttribute('values',studyKeepColor?'1':'0');
+};
+(function injectStudyColorToggle(){
+  const chips=document.getElementById('studyPageChips');
+  if(!chips)return;
+  const row=document.createElement('div');
+  row.className='seg';row.style.marginTop='12px';row.id='studyValueMode';
+  row.innerHTML='<button data-c="gris" aria-pressed="true">Valeurs en gris</button>'+
+                '<button data-c="couleur" aria-pressed="false">Valeurs en couleur</button>';
+  chips.after(row);
+  row.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    studyKeepColor=(b.dataset.c==='couleur');
+    row.querySelectorAll('button').forEach(x=>
+      x.setAttribute('aria-pressed',String(x===b)));
+    if(studyPageMode.indexOf('value')===0)setStudyPageMode(studyPageMode);
+  });
+})();
+/* le mode Lumière suit le même réglage : gris, ou couleur désaturée conservée */
+const _setStudyPageModeBase=setStudyPageMode;
+setStudyPageMode = async function(m){
+  await _setStudyPageModeBase(m);
+  const row=document.getElementById('studyValueMode');
+  if(row)row.style.display=(m.indexOf('value')===0)?'flex':'none';
+  const th=document.getElementById('studyTheory');
+  if(th&&studyPageImg&&m.indexOf('value')===0&&studyKeepColor){
+    th.textContent=(STUDY_THEORY[m]||'')+
+      " Ici la teinte est conservée : tu lis les masses de couleur plutôt que les seuls gris.";
+  }
+};
+
+/* ═══════════ mise en route ═══════════ */
+(function boot(){
+  const start=()=>{
+    paintLibrary();
+    const row=document.getElementById('studyValueMode');
+    if(row)row.style.display='none';
+    syncWheelInputs();
+  };
+  if(document.readyState==='complete')setTimeout(start,300);
+  else window.addEventListener('load',()=>setTimeout(start,300));
+})();
+</script>
   </body>
 </html>
