@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="light">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#F8FAFC">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Strok">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23020618'/%3E%3Cpath d='M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2' fill='none' stroke='%23EBAB0A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<title>Strok</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F8FAFC">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Strok">
+    <link rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23020618'/%3E%3Cpath d='M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2' fill='none' stroke='%23EBAB0A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <title>Strok</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Akt&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Akt:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Akt&display=swap"
+      rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Akt:wght@400;500;700&display=swap"
+      rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet">
+    <style>
 :root{
   --paper:#EDEAE3;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -603,293 +610,376 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--ring);outline-o
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 </style>
-</head>
-<body>
-<div id="app"><div class="phone">
+  </head>
+  <body>
+    <div id="app"><div class="phone">
 
-  <!-- AUJOURD'HUI -->
-  <section class="screen on" id="tab-today">
-    <header class="topbar">
-      <span class="brand"><span id="brandMark"></span><b>Strok</b></span>
-      <button class="iconbtn press" id="themeQuick" onclick="cycleTheme()" aria-label="Thème"></button>
-    </header>
-    <div class="scroll"><div class="wrap">
-      <p class="date" id="today">—</p>
-      <div class="study" id="studyBlock">
-        <div class="studynum"><span id="studyNum">01</span><em id="studyTot">/14</em></div>
-        <h1 class="display" id="studyName">—</h1>
-        <p class="lede" id="studyBrief">—</p>
-        <dl class="constraints">
-          <div><dt>Palette</dt><dd id="cPal">—</dd></div>
-          <div><dt>Rendu</dt><dd id="cMode">—</dd></div>
-        </dl>
-        <button class="link press" onclick="shuffleStudy()"><span id="icRef"></span>Proposer une autre étude</button>
-      </div>
-      <button class="primary press" onclick="openSheet('source')">Commencer l'étude</button>
-      <button class="quiet press" onclick="newSession(null)">Dessiner sans consigne<span id="icArr"></span></button>
-    </div></div>
-  </section>
+        <!-- AUJOURD'HUI -->
+        <section class="screen on" id="tab-today">
+          <header class="topbar">
+            <span class="brand"><span id="brandMark"></span><b>Strok</b></span>
+            <button class="iconbtn press" id="themeQuick" onclick="cycleTheme()"
+              aria-label="Thème"></button>
+          </header>
+          <div class="scroll"><div class="wrap">
+              <p class="date" id="today">—</p>
+              <div class="study" id="studyBlock">
+                <div class="studynum"><span id="studyNum">01</span><em
+                    id="studyTot">/14</em></div>
+                <h1 class="display" id="studyName">—</h1>
+                <p class="lede" id="studyBrief">—</p>
+                <dl class="constraints">
+                  <div><dt>Palette</dt><dd id="cPal">—</dd></div>
+                  <div><dt>Rendu</dt><dd id="cMode">—</dd></div>
+                </dl>
+                <button class="link press" onclick="shuffleStudy()"><span
+                    id="icRef"></span>Proposer une autre étude</button>
+              </div>
+              <button class="primary press"
+                onclick="openSheet('source')">Commencer l'étude</button>
+              <button class="quiet press" onclick="newSession(null)">Dessiner
+                sans consigne<span id="icArr"></span></button>
+            </div></div>
+        </section>
 
-  <!-- CARNET -->
-  <section class="screen" id="tab-carnet">
-    <header class="topbar">
-      <span class="brand"><b>Carnet</b></span>
-      <span class="lbl" id="count" style="padding-right:10px"></span>
-    </header>
-    <div class="scroll"><div class="wrap">
-      <div class="seg">
-        <button data-p="dessins" aria-pressed="true" onclick="showPane('dessins')"><span id="icG1"></span>Dessins</button>
-        <button data-p="albums" aria-pressed="false" onclick="showPane('albums')"><span id="icG2"></span>Albums</button>
-      </div>
-      <div class="pane on" id="pane-dessins">
-        <button class="switch" id="duoBtn" aria-pressed="false" onclick="toggleDuo()">
-          <span>Afficher le modèle à côté du dessin</span><span class="track"><i></i></span></button>
-        <div class="cells" id="allCells"></div>
-        <div class="empty" id="emptyDessins" style="display:none">
-          <span id="icEmpty1"></span>
-          <p>Rien encore. Commence l'étude du jour, ou dessine sans consigne.</p>
-        </div>
-      </div>
-      <div class="pane" id="pane-albums">
-        <div class="newalb">
-          <input id="albName" placeholder="Nom d'un nouvel album" onkeydown="if(event.key==='Enter')addAlbum()">
-          <button onclick="addAlbum()">Créer</button>
-        </div>
-        <div id="albumList"></div>
-        <div class="empty" id="emptyAlbums" style="display:none">
-          <span id="icEmpty2"></span>
-          <p>Aucun album. Un dessin peut être rangé dans plusieurs à la fois, ou dans aucun.</p>
-        </div>
-      </div>
-    </div></div>
-  </section>
+        <!-- CARNET -->
+        <section class="screen" id="tab-carnet">
+          <header class="topbar">
+            <span class="brand"><b>Carnet</b></span>
+            <span class="lbl" id="count" style="padding-right:10px"></span>
+          </header>
+          <div class="scroll"><div class="wrap">
+              <div class="seg">
+                <button data-p="dessins" aria-pressed="true"
+                  onclick="showPane('dessins')"><span
+                    id="icG1"></span>Dessins</button>
+                <button data-p="albums" aria-pressed="false"
+                  onclick="showPane('albums')"><span
+                    id="icG2"></span>Albums</button>
+              </div>
+              <div class="pane on" id="pane-dessins">
+                <button class="switch" id="duoBtn" aria-pressed="false"
+                  onclick="toggleDuo()">
+                  <span>Afficher le modèle à côté du dessin</span><span
+                    class="track"><i></i></span></button>
+                <div class="cells" id="allCells"></div>
+                <div class="empty" id="emptyDessins" style="display:none">
+                  <span id="icEmpty1"></span>
+                  <p>Rien encore. Commence l'étude du jour, ou dessine sans
+                    consigne.</p>
+                </div>
+              </div>
+              <div class="pane" id="pane-albums">
+                <div class="newalb">
+                  <input id="albName" placeholder="Nom d'un nouvel album"
+                    onkeydown="if(event.key==='Enter')addAlbum()">
+                  <button onclick="addAlbum()">Créer</button>
+                </div>
+                <div id="albumList"></div>
+                <div class="empty" id="emptyAlbums" style="display:none">
+                  <span id="icEmpty2"></span>
+                  <p>Aucun album. Un dessin peut être rangé dans plusieurs à la
+                    fois, ou dans aucun.</p>
+                </div>
+              </div>
+            </div></div>
+        </section>
 
-  <!-- PROFIL -->
-  <section class="screen" id="tab-profil">
-    <header class="topbar"><span class="brand"><b>Profil</b></span></header>
-    <div class="scroll"><div class="wrap">
-      <div class="stats">
-        <div><b id="stDraw">0</b><span>Dessins</span></div>
-        <div><b id="stStudy">0</b><span>Études</span></div>
-        <div><b id="stAlb">0</b><span>Albums</span></div>
-      </div>
-      <div class="block">
-        <span class="lbl">Apparence</span>
-        <div class="seg">
-          <button data-t="light" onclick="setTheme('light')"><span id="icSun"></span>Clair</button>
-          <button data-t="dark" onclick="setTheme('dark')"><span id="icMoon"></span>Sombre</button>
-          <button data-t="system" onclick="setTheme('system')"><span id="icSys"></span>Système</button>
-        </div>
-      </div>
-      <div class="block">
-        <span class="lbl">Stockage</span>
-        <p class="about" id="storageInfo">—</p>
-      </div>
-      <div class="block">
-        <span class="lbl">À propos</span>
-        <p class="about"><b>Strok</b> garde tout sur ton téléphone. Rien n'est envoyé nulle part,
-        il n'y a ni compte, ni fil d'actualité, ni personne d'autre dedans.</p>
-      </div>
-    </div></div>
-  </section>
+        <!-- PROFIL -->
+        <section class="screen" id="tab-profil">
+          <header class="topbar"><span
+              class="brand"><b>Profil</b></span></header>
+          <div class="scroll"><div class="wrap">
+              <div class="stats">
+                <div><b id="stDraw">0</b><span>Dessins</span></div>
+                <div><b id="stStudy">0</b><span>Études</span></div>
+                <div><b id="stAlb">0</b><span>Albums</span></div>
+              </div>
+              <div class="block">
+                <span class="lbl">Apparence</span>
+                <div class="seg">
+                  <button data-t="light" onclick="setTheme('light')"><span
+                      id="icSun"></span>Clair</button>
+                  <button data-t="dark" onclick="setTheme('dark')"><span
+                      id="icMoon"></span>Sombre</button>
+                  <button data-t="system" onclick="setTheme('system')"><span
+                      id="icSys"></span>Système</button>
+                </div>
+              </div>
+              <div class="block">
+                <span class="lbl">Stockage</span>
+                <p class="about" id="storageInfo">—</p>
+              </div>
+              <div class="block">
+                <span class="lbl">À propos</span>
+                <p class="about"><b>Strok</b> garde tout sur ton téléphone. Rien
+                  n'est envoyé nulle part,
+                  il n'y a ni compte, ni fil d'actualité, ni personne d'autre
+                  dedans.</p>
+              </div>
+            </div></div>
+        </section>
 
-  <!-- DESSIN -->
-  <section class="fullview" id="draw">
-    <header class="bar">
-      <button class="iconbtn press" onclick="quitDraw()" id="icX"></button>
-      <span class="ttl" id="drawTitle">Séance</span>
-      <button class="iconbtn press" onclick="undo()" id="icUndo"></button>
-      <button class="iconbtn press accent" onclick="openSave()" id="icCheck"></button>
-    </header>
-    <div class="refpane" id="refPane">
-      <div class="holder"><img id="refImgEl" alt="Modèle"><div class="palbar pick" id="palBarTop"></div></div>
-    </div>
-    <div class="stage">
-      <div class="vp" id="vp"><div class="stack" id="stack">
-        <canvas id="cBg"></canvas><canvas id="cInk"></canvas><canvas id="cTmp"></canvas>
+        <!-- DESSIN -->
+        <section class="fullview" id="draw">
+          <header class="bar">
+            <button class="iconbtn press" onclick="quitDraw()"
+              id="icX"></button>
+            <span class="ttl" id="drawTitle">Séance</span>
+            <button class="iconbtn press" onclick="undo()" id="icUndo"></button>
+            <button class="iconbtn press accent" onclick="openSave()"
+              id="icCheck"></button>
+          </header>
+          <div class="refpane" id="refPane">
+            <div class="holder"><img id="refImgEl" alt="Modèle"><div
+                class="palbar pick" id="palBarTop"></div></div>
+          </div>
+          <div class="stage">
+            <div class="vp" id="vp"><div class="stack" id="stack">
+                <canvas id="cBg"></canvas><canvas id="cInk"></canvas><canvas
+                  id="cTmp"></canvas>
+              </div></div>
+            <button class="viewchip" id="viewChip" onclick="resetView()"><span
+                id="icReset"></span><i>100 %</i></button>
+          </div>
+          <nav class="dock">
+            <button class="dockbtn" id="dkBrush"
+              onclick="openSheet('brush')"><span></span><i>Pinceau</i></button>
+            <button class="dockbtn" id="dkErase"
+              onclick="toggleEraser()"><span></span><i>Gomme</i></button>
+            <button class="dockbtn" id="dkColor"
+              onclick="openSheet('color')"><span class="dot"
+                id="dockDot"></span><i>Couleur</i></button>
+            <button class="dockbtn" id="dkRef"
+              onclick="openSheet('ref')"><span></span><i>Modèle</i></button>
+          </nav>
+        </section>
+
+        <!-- ENREGISTRER -->
+        <section class="fullview" id="save">
+          <header class="bar">
+            <button class="iconbtn press" onclick="go('draw')"
+              id="icBack1"></button>
+            <span class="ttl">Enregistrer</span><span style="width:44px"></span>
+          </header>
+          <div class="scroll"><div class="wrap">
+              <div class="prev"><img id="savePrev" alt="Aperçu"></div>
+              <div class="field"><label for="pieceTitle">Titre</label>
+                <input type="text" id="pieceTitle"
+                  placeholder="Sans titre"></div>
+              <div class="field" id="keepRefField"><label>Modèle</label>
+                <button class="toggle press" id="keepRef" aria-pressed="true"
+                  onclick="toggleKeepRef()">
+                  <i></i><span>Garder le modèle avec le
+                    dessin</span></button></div>
+              <div class="field"><label>Ranger dans un album</label>
+                <div class="tags" id="saveTags"></div>
+                <div class="newalb"><input id="albName2"
+                    placeholder="Nouvel album"
+                    onkeydown="if(event.key==='Enter')addAlbumFromSave()"><button
+                    onclick="addAlbumFromSave()">Créer</button></div>
+              </div>
+              <button class="primary press"
+                onclick="commitSave()">Enregistrer</button>
+            </div></div>
+        </section>
+
+        <!-- ALBUM -->
+        <section class="fullview" id="album">
+          <header class="bar">
+            <button class="iconbtn press" onclick="showTab('carnet')"
+              id="icBack2"></button>
+            <span class="ttl">Album</span><span style="width:44px"></span>
+          </header>
+          <div class="scroll"><div class="wrap">
+              <h2 class="title" id="albH" style="margin-top:2px">—</h2>
+              <p class="meta" id="albCount">—</p>
+              <div class="cells" id="albCells"></div>
+              <div class="empty" id="albNote" style="display:none"><p>Album
+                  vide. Ouvre un dessin pour l'y ranger.</p></div>
+              <div class="pillrow" style="margin-top:22px">
+                <button class="pill press" onclick="renameAlbum()"><span
+                    id="icPen"></span>Renommer</button>
+                <button class="pill press danger" onclick="deleteAlbum()"><span
+                    id="icTrash1"></span>Supprimer l'album</button>
+              </div>
+            </div></div>
+        </section>
+
+        <!-- VUE -->
+        <section class="fullview" id="view">
+          <header class="bar">
+            <button class="iconbtn press" onclick="backFromView()"
+              id="icBack3"></button>
+            <span class="ttl" id="viewDate">—</span>
+            <button class="iconbtn press" id="refToggle"
+              onclick="toggleViewRef()"></button>
+          </header>
+          <div class="scroll"><div class="wrap">
+              <div id="viewLoading" class="loading">Chargement…</div>
+              <div class="frame"><img id="viewImg" alt></div>
+              <div class="palbar" id="viewPal" style="height:18px"></div>
+              <div class="refshot" id="viewRefShot"><img id="viewRefImg"
+                  alt="Modèle"></div>
+              <h2 class="title" id="viewTitle">—</h2>
+              <p class="meta" id="viewMeta">—</p>
+              <div class="pillrow" style="margin-bottom:22px">
+                <button class="pill press" onclick="download('solo')"><span
+                    id="icDl2"></span>Le dessin</button>
+                <button class="pill press" id="dlCard"
+                  onclick="download('card')"><span id="icDl3"></span>La
+                  planche</button>
+                <button class="pill press" onclick="download('story')"><span
+                    id="icStory"></span>Story Instagram</button>
+                <button class="pill press danger" onclick="deletePiece()"><span
+                    id="icTrash2"></span>Supprimer</button>
+              </div>
+              <span class="lbl" style="display:block;margin-bottom:10px">Ranger
+                dans</span>
+              <div class="tags" id="viewTags"></div>
+            </div></div>
+        </section>
+
+        <!-- MODÈLE EN GRAND -->
+        <div class="bigref" id="bigRef">
+          <div class="bigctl">
+            <button class="iconbtn" onclick="closeBigRef()" id="icBRX"></button>
+            <button class="pill press" id="bigMono" onclick="toggleMono()"><span
+                id="icBRC"></span>Valeurs</button>
+            <button class="iconbtn" onclick="resetBigRef()" id="icBRR"></button>
+          </div>
+          <div class="bigstage" id="bigStage"><img id="bigRefImg"
+              alt="Modèle"></div>
+          <div class="palbar" id="bigPal"></div>
+        </div>
+
+        <!-- ENREGISTRER L'IMAGE -->
+        <div class="saveimg" id="saveImg">
+          <div class="bigctl">
+            <button class="iconbtn" onclick="closeSaveImg()"
+              id="icSIX"></button>
+            <span class="lbl">Enregistrer l'image</span>
+            <span style="width:44px"></span>
+          </div>
+          <div class="bigstage"><img id="saveImgSrc" alt="Ton dessin"></div>
+          <p class="savehint">Appui long sur l'image, puis
+            <b>Enregistrer</b>.<br>
+            <a id="saveImgLink" download>Ou télécharger le fichier</a></p>
+        </div>
+
+        <!-- CAMÉRA -->
+        <div class="camwrap" id="camWrap">
+          <video id="cam" playsinline autoplay muted></video>
+          <div class="camctl">
+            <button class="iconbtn" onclick="closeCamera()"
+              id="icCamX"></button>
+            <button class="shutter" onclick="shoot()"
+              aria-label="Prendre la photo"></button>
+            <button class="iconbtn" onclick="flipCamera()" id="icFlip"></button>
+          </div>
+        </div>
+        <div class="toast" id="toast"></div>
+
+        <!-- ONGLETS -->
+        <nav class="tabbar" id="tabbar">
+          <span class="tabind" id="tabInd"></span>
+          <button class="tabbtn on" data-t="today"
+            onclick="showTab('today')"><span></span><i>Aujourd'hui</i></button>
+          <button class="tabbtn" data-t="carnet"
+            onclick="showTab('carnet')"><span></span><i>Carnet</i></button>
+          <button class="tabbtn" data-t="profil"
+            onclick="showTab('profil')"><span></span><i>Profil</i></button>
+        </nav>
+
+        <!-- PANNEAUX -->
+        <div class="scrim" id="scrim" onclick="closeSheet()"></div>
+
+        <div class="sheet" id="sheetSource">
+          <div class="handle"></div>
+          <div class="sheet-h"><h3>Ton modèle</h3><button class="iconbtn"
+              onclick="closeSheet()" id="icX5"></button></div>
+          <p class="subtle" style="margin:0 0 14px">Photographie quelque chose
+            autour de toi, ou choisis une image.
+            Sa palette sera extraite automatiquement.</p>
+          <div class="bigchoice">
+            <button class="press" onclick="startStudy('camera')"><span
+                id="icCam3"></span>Photographier</button>
+            <button class="press" onclick="startStudy('file')"><span
+                id="icImg4"></span>Mes images</button>
+          </div>
+        </div>
+
+        <div class="sheet" id="sheetBrush">
+          <div class="handle"></div>
+          <div class="sheet-h"><h3>Pinceau</h3><button class="iconbtn"
+              onclick="closeSheet()" id="icX2"></button></div>
+          <div id="brushList"></div>
+          <div class="sl"><label><span>Taille</span><i id="szv"
+                style="font-style:normal">22</i></label>
+            <div class="fader" id="szFader"><span class="fill"></span><span
+                class="knob"></span></div></div>
+          <div class="sl"><label><span>Opacité</span><i id="opv"
+                style="font-style:normal">100</i></label>
+            <div class="fader" id="opFader"><span class="fill"></span><span
+                class="knob"></span></div></div>
+        </div>
+
+        <div class="sheet" id="sheetColor">
+          <div class="handle"></div>
+          <div class="sheet-h"><h3>Couleur</h3><button class="iconbtn"
+              onclick="closeSheet()" id="icX3"></button></div>
+          <canvas id="sv"></canvas><canvas id="hue"></canvas>
+          <div class="hexline">
+            <span class="chip" id="hexChip"></span><code
+              id="hexTxt">#1A1A1E</code>
+            <span style="flex:1"></span>
+            <button class="pill press" id="pipBtn"
+              onclick="startPipette()"><span id="icPip"></span>Pipette</button>
+            <input type="color" class="nativepick press" id="nativePick"
+              value="#1A1A1E"
+              oninput="setColor(this.value)" aria-label="Choisir une couleur">
+          </div>
+          <div id="palSection"></div>
+          <div class="presets" id="presets"></div>
+          <div class="swwrap" id="sws"></div>
+          <div id="recentSection"></div>
+        </div>
+
+        <div class="sheet" id="sheetRef">
+          <div class="handle"></div>
+          <div class="sheet-h"><h3>Modèle</h3><button class="iconbtn"
+              onclick="closeSheet()" id="icX4"></button></div>
+          <div class="bigchoice">
+            <button class="press" onclick="pickRef('camera')"><span
+                id="icCam2"></span>Photographier</button>
+            <button class="press" onclick="pickRef('file')"><span
+                id="icImg3"></span>Mes images</button>
+          </div>
+          <div id="refControls" style="display:none">
+            <div class="pillrow">
+              <button class="pill" id="mSplit" onclick="setRefMode('split')">À
+                côté</button>
+              <button class="pill" id="mUnder" onclick="setRefMode('under')">En
+                fond</button>
+              <button class="pill" id="palN" onclick="cyclePalette()">8
+                tons</button>
+              <button class="pill" id="monoBtn" onclick="toggleMono()"><span
+                  id="icContrast"></span>Valeurs</button>
+              <button class="pill danger" onclick="clearRef()"><span
+                  id="icTrash3"></span>Retirer</button>
+            </div>
+            <div class="sl" id="refOpWrap"><label><span>Opacité du fond</span><i
+                  id="rov" style="font-style:normal">42</i></label>
+              <div class="fader" id="refFader"><span class="fill"></span><span
+                  class="knob"></span></div></div>
+            <p class="subtle">Pince à deux doigts sur le modèle pour l'agrandir.
+              Double-tap pour le remettre à plat.</p>
+          </div>
+        </div>
+
       </div></div>
-      <button class="viewchip" id="viewChip" onclick="resetView()"><span id="icReset"></span><i>100 %</i></button>
-    </div>
-    <nav class="dock">
-      <button class="dockbtn" id="dkBrush" onclick="openSheet('brush')"><span></span><i>Pinceau</i></button>
-      <button class="dockbtn" id="dkErase" onclick="toggleEraser()"><span></span><i>Gomme</i></button>
-      <button class="dockbtn" id="dkColor" onclick="openSheet('color')"><span class="dot" id="dockDot"></span><i>Couleur</i></button>
-      <button class="dockbtn" id="dkRef" onclick="openSheet('ref')"><span></span><i>Modèle</i></button>
-    </nav>
-  </section>
 
-  <!-- ENREGISTRER -->
-  <section class="fullview" id="save">
-    <header class="bar">
-      <button class="iconbtn press" onclick="go('draw')" id="icBack1"></button>
-      <span class="ttl">Enregistrer</span><span style="width:44px"></span>
-    </header>
-    <div class="scroll"><div class="wrap">
-      <div class="prev"><img id="savePrev" alt="Aperçu"></div>
-      <div class="field"><label for="pieceTitle">Titre</label>
-        <input type="text" id="pieceTitle" placeholder="Sans titre"></div>
-      <div class="field" id="keepRefField"><label>Modèle</label>
-        <button class="toggle press" id="keepRef" aria-pressed="true" onclick="toggleKeepRef()">
-          <i></i><span>Garder le modèle avec le dessin</span></button></div>
-      <div class="field"><label>Ranger dans un album</label>
-        <div class="tags" id="saveTags"></div>
-        <div class="newalb"><input id="albName2" placeholder="Nouvel album"
-          onkeydown="if(event.key==='Enter')addAlbumFromSave()"><button onclick="addAlbumFromSave()">Créer</button></div>
-      </div>
-      <button class="primary press" onclick="commitSave()">Enregistrer</button>
-    </div></div>
-  </section>
-
-  <!-- ALBUM -->
-  <section class="fullview" id="album">
-    <header class="bar">
-      <button class="iconbtn press" onclick="showTab('carnet')" id="icBack2"></button>
-      <span class="ttl">Album</span><span style="width:44px"></span>
-    </header>
-    <div class="scroll"><div class="wrap">
-      <h2 class="title" id="albH" style="margin-top:2px">—</h2>
-      <p class="meta" id="albCount">—</p>
-      <div class="cells" id="albCells"></div>
-      <div class="empty" id="albNote" style="display:none"><p>Album vide. Ouvre un dessin pour l'y ranger.</p></div>
-      <div class="pillrow" style="margin-top:22px">
-        <button class="pill press" onclick="renameAlbum()"><span id="icPen"></span>Renommer</button>
-        <button class="pill press danger" onclick="deleteAlbum()"><span id="icTrash1"></span>Supprimer l'album</button>
-      </div>
-    </div></div>
-  </section>
-
-  <!-- VUE -->
-  <section class="fullview" id="view">
-    <header class="bar">
-      <button class="iconbtn press" onclick="backFromView()" id="icBack3"></button>
-      <span class="ttl" id="viewDate">—</span>
-      <button class="iconbtn press" id="refToggle" onclick="toggleViewRef()"></button>
-    </header>
-    <div class="scroll"><div class="wrap">
-      <div id="viewLoading" class="loading">Chargement…</div>
-      <div class="frame"><img id="viewImg" alt=""></div>
-      <div class="palbar" id="viewPal" style="height:18px"></div>
-      <div class="refshot" id="viewRefShot"><img id="viewRefImg" alt="Modèle"></div>
-      <h2 class="title" id="viewTitle">—</h2>
-      <p class="meta" id="viewMeta">—</p>
-      <div class="pillrow" style="margin-bottom:22px">
-        <button class="pill press" onclick="download('solo')"><span id="icDl2"></span>Le dessin</button>
-        <button class="pill press" id="dlCard" onclick="download('card')"><span id="icDl3"></span>La planche</button>
-        <button class="pill press" onclick="download('story')"><span id="icStory"></span>Story Instagram</button>
-        <button class="pill press danger" onclick="deletePiece()"><span id="icTrash2"></span>Supprimer</button>
-      </div>
-      <span class="lbl" style="display:block;margin-bottom:10px">Ranger dans</span>
-      <div class="tags" id="viewTags"></div>
-    </div></div>
-  </section>
-
-  <!-- MODÈLE EN GRAND -->
-  <div class="bigref" id="bigRef">
-    <div class="bigctl">
-      <button class="iconbtn" onclick="closeBigRef()" id="icBRX"></button>
-      <button class="pill press" id="bigMono" onclick="toggleMono()"><span id="icBRC"></span>Valeurs</button>
-      <button class="iconbtn" onclick="resetBigRef()" id="icBRR"></button>
-    </div>
-    <div class="bigstage" id="bigStage"><img id="bigRefImg" alt="Modèle"></div>
-    <div class="palbar" id="bigPal"></div>
-  </div>
-
-  <!-- ENREGISTRER L'IMAGE -->
-  <div class="saveimg" id="saveImg">
-    <div class="bigctl">
-      <button class="iconbtn" onclick="closeSaveImg()" id="icSIX"></button>
-      <span class="lbl">Enregistrer l'image</span>
-      <span style="width:44px"></span>
-    </div>
-    <div class="bigstage"><img id="saveImgSrc" alt="Ton dessin"></div>
-    <p class="savehint">Appui long sur l'image, puis <b>Enregistrer</b>.<br>
-      <a id="saveImgLink" download>Ou télécharger le fichier</a></p>
-  </div>
-
-  <!-- CAMÉRA -->
-  <div class="camwrap" id="camWrap">
-    <video id="cam" playsinline autoplay muted></video>
-    <div class="camctl">
-      <button class="iconbtn" onclick="closeCamera()" id="icCamX"></button>
-      <button class="shutter" onclick="shoot()" aria-label="Prendre la photo"></button>
-      <button class="iconbtn" onclick="flipCamera()" id="icFlip"></button>
-    </div>
-  </div>
-  <div class="toast" id="toast"></div>
-
-  <!-- ONGLETS -->
-  <nav class="tabbar" id="tabbar">
-    <span class="tabind" id="tabInd"></span>
-    <button class="tabbtn on" data-t="today" onclick="showTab('today')"><span></span><i>Aujourd'hui</i></button>
-    <button class="tabbtn" data-t="carnet" onclick="showTab('carnet')"><span></span><i>Carnet</i></button>
-    <button class="tabbtn" data-t="profil" onclick="showTab('profil')"><span></span><i>Profil</i></button>
-  </nav>
-
-  <!-- PANNEAUX -->
-  <div class="scrim" id="scrim" onclick="closeSheet()"></div>
-
-  <div class="sheet" id="sheetSource">
-    <div class="handle"></div>
-    <div class="sheet-h"><h3>Ton modèle</h3><button class="iconbtn" onclick="closeSheet()" id="icX5"></button></div>
-    <p class="subtle" style="margin:0 0 14px">Photographie quelque chose autour de toi, ou choisis une image.
-      Sa palette sera extraite automatiquement.</p>
-    <div class="bigchoice">
-      <button class="press" onclick="startStudy('camera')"><span id="icCam3"></span>Photographier</button>
-      <button class="press" onclick="startStudy('file')"><span id="icImg4"></span>Mes images</button>
-    </div>
-  </div>
-
-  <div class="sheet" id="sheetBrush">
-    <div class="handle"></div>
-    <div class="sheet-h"><h3>Pinceau</h3><button class="iconbtn" onclick="closeSheet()" id="icX2"></button></div>
-    <div id="brushList"></div>
-    <div class="sl"><label><span>Taille</span><i id="szv" style="font-style:normal">22</i></label>
-      <div class="fader" id="szFader"><span class="fill"></span><span class="knob"></span></div></div>
-    <div class="sl"><label><span>Opacité</span><i id="opv" style="font-style:normal">100</i></label>
-      <div class="fader" id="opFader"><span class="fill"></span><span class="knob"></span></div></div>
-  </div>
-
-  <div class="sheet" id="sheetColor">
-    <div class="handle"></div>
-    <div class="sheet-h"><h3>Couleur</h3><button class="iconbtn" onclick="closeSheet()" id="icX3"></button></div>
-    <canvas id="sv"></canvas><canvas id="hue"></canvas>
-    <div class="hexline">
-      <span class="chip" id="hexChip"></span><code id="hexTxt">#1A1A1E</code>
-      <span style="flex:1"></span>
-      <button class="pill press" id="pipBtn" onclick="startPipette()"><span id="icPip"></span>Pipette</button>
-      <input type="color" class="nativepick press" id="nativePick" value="#1A1A1E"
-        oninput="setColor(this.value)" aria-label="Choisir une couleur">
-    </div>
-    <div id="palSection"></div>
-    <div class="presets" id="presets"></div>
-    <div class="swwrap" id="sws"></div>
-    <div id="recentSection"></div>
-  </div>
-
-  <div class="sheet" id="sheetRef">
-    <div class="handle"></div>
-    <div class="sheet-h"><h3>Modèle</h3><button class="iconbtn" onclick="closeSheet()" id="icX4"></button></div>
-    <div class="bigchoice">
-      <button class="press" onclick="pickRef('camera')"><span id="icCam2"></span>Photographier</button>
-      <button class="press" onclick="pickRef('file')"><span id="icImg3"></span>Mes images</button>
-    </div>
-    <div id="refControls" style="display:none">
-      <div class="pillrow">
-        <button class="pill" id="mSplit" onclick="setRefMode('split')">À côté</button>
-        <button class="pill" id="mUnder" onclick="setRefMode('under')">En fond</button>
-        <button class="pill" id="palN" onclick="cyclePalette()">8 tons</button>
-        <button class="pill" id="monoBtn" onclick="toggleMono()"><span id="icContrast"></span>Valeurs</button>
-        <button class="pill danger" onclick="clearRef()"><span id="icTrash3"></span>Retirer</button>
-      </div>
-      <div class="sl" id="refOpWrap"><label><span>Opacité du fond</span><i id="rov" style="font-style:normal">42</i></label>
-        <div class="fader" id="refFader"><span class="fill"></span><span class="knob"></span></div></div>
-      <p class="subtle">Pince à deux doigts sur le modèle pour l'agrandir. Double-tap pour le remettre à plat.</p>
-    </div>
-  </div>
-
-</div></div>
-
-<script>
+    <script>
 /* ===================== ICÔNES (Lucide, ISC) ===================== */
 const ICONS={
  squiggle:'<path d="M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2"/>',
@@ -2294,5 +2384,5 @@ load().then(()=>{showTab('today');syncDock();buildColorPanel();});
 
 
 </script>
-</body>
+  </body>
 </html>
